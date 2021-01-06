@@ -1,0 +1,62 @@
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="post-me child" />
+  <title>post-me child</title>
+</head>
+
+<body>
+  <div id="root" class="root">
+    <h1>Child</h1>
+    <div class="section">
+      <span>Set parent title</span>
+      <input id="title-input" />
+    </div>
+
+    <div class="section">
+      <span>"ping" events received: <b><span id="count-span">0</span></b></span>
+    </div>
+
+    <div class="section">
+      <button id="emit-btn">Emit "pong" event</button>
+    </div>
+  </div>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+</body>
+
+<!-- <script src="https://unpkg.com/debug-browser/dist/index.js"></script> -->
+<script src="./child.js"></script>
+
+<style>
+  html {
+    width: 100%;
+    height: 100%;
+  }
+
+  body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .root {
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+  }
+
+  .section {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+</style>
+
+</html>

@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "module": "ESNext",
+    "target": "ESNext",
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "allowJs": true,
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "rootDir": "src",
+    "outDir": "dist",
+    "moduleResolution": "node"
+  },
+  "include": [
+    "src"
+  ]
+}
