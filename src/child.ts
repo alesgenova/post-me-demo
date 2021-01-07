@@ -34,7 +34,7 @@ let messenger = new WindowMessenger({
 // messenger = DebugMessenger(messenger, log);
 
 // Start handshake
-ChildHandshake(model, messenger).then((connection: Connection<ChildEvents, ParentMethods, ParentEvents>) => {
+ChildHandshake(messenger, model).then((connection: Connection<ChildEvents, ParentMethods, ParentEvents>) => {
   const remoteHandle = connection.remoteHandle();
   const localHandle = connection.localHandle();
 

@@ -32,7 +32,7 @@ const emitBtn = document.getElementById('emit-btn') as HTMLButtonElement;
   // messenger = DebugMessenger(messenger, log);
 
   // Start handshake with the worker
-  ParentHandshake({}, messenger).then((connection: Connection<{}, WorkerMethods, WorkerEvents>) => {
+  ParentHandshake(messenger).then((connection: Connection<{}, WorkerMethods, WorkerEvents>) => {
     const remoteHandle = connection.remoteHandle();
 
     calculateBtn.onclick = () => {
@@ -83,7 +83,7 @@ const emitBtn = document.getElementById('emit-btn') as HTMLButtonElement;
   // messenger = DebugMessenger(messenger, log);
 
   // Start handshake with the iframe
-  ParentHandshake(model, messenger).then((connection: Connection<ParentEvents, ChildMethods, ChildEvents>) => {
+  ParentHandshake(messenger, model).then((connection: Connection<ParentEvents, ChildMethods, ChildEvents>) => {
     const remoteHandle = connection.remoteHandle();
     const localHandle = connection.localHandle();
 

@@ -15,4 +15,4 @@ let messenger = new WorkerMessenger({ worker: self as any });
 // messenger = DebugMessenger(messenger, log);
 
 // Start handshake with the parent
-ChildHandshake(model, messenger).then((_connection) => { });
+ChildHandshake(messenger, model).then((_connection) => { });
