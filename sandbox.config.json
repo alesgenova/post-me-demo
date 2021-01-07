@@ -3,5 +3,6 @@
 	"hardReloadOnChange": false,
 	"view": "browser",
 	"template": "node",
+	"startScript": "build",
 	"node": "12"
 }

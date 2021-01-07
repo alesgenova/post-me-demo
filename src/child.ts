@@ -1,4 +1,4 @@
-import { WindowMessenger, DebugMessenger, ChildHandshake, Connection, debug } from "post-me";
+import { WindowMessenger, ChildHandshake, RemoteHandle, LocalHandle, DebugMessenger, debug } from "post-me";
 import { ChildMethods, ChildEvents, ParentMethods, ParentEvents } from "./types";
 
 let currentColor = '#A5D6A7';
@@ -34,9 +34,9 @@ let messenger = new WindowMessenger({
 // messenger = DebugMessenger(messenger, log);
 
 // Start handshake
-ChildHandshake(messenger, model).then((connection: Connection<ChildEvents, ParentMethods, ParentEvents>) => {
-  const remoteHandle = connection.remoteHandle();
-  const localHandle = connection.localHandle();
+ChildHandshake(messenger, model).then((connection) => {
+  const remoteHandle: RemoteHandle<ParentMethods, ParentEvents> = connection.remoteHandle();
+  const localHandle: LocalHandle<ChildEvents> = connection.localHandle();
 
   remoteHandle.call('getTitle').then(title => {
     titleInput.value = title;

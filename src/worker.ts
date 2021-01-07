@@ -1,10 +1,10 @@
-import { WorkerMessenger, DebugMessenger, ChildHandshake, debug } from "post-me";
+import { WorkerMessenger, ChildHandshake, DebugMessenger, debug } from "post-me";
 import { WorkerMethods } from "./types";
 
 const model: WorkerMethods = {
     sum: (x, y) => {
         return new Promise((resolve) => {
-            setTimeout(() => resolve(x + y), 500)
+            setTimeout(() => resolve(x + y), 250)
         })
     }
 }

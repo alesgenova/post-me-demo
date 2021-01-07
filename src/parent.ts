@@ -1,4 +1,4 @@
-import { WorkerMessenger, ParentHandshake, Connection, DebugMessenger, debug, WindowMessenger } from "post-me";
+import { WorkerMessenger, ParentHandshake, WindowMessenger, LocalHandle, RemoteHandle, DebugMessenger, debug } from "post-me";
 import {
   ParentMethods,
   ParentEvents,
@@ -32,8 +32,8 @@ const emitBtn = document.getElementById('emit-btn') as HTMLButtonElement;
   // messenger = DebugMessenger(messenger, log);
 
   // Start handshake with the worker
-  ParentHandshake(messenger).then((connection: Connection<{}, WorkerMethods, WorkerEvents>) => {
-    const remoteHandle = connection.remoteHandle();
+  ParentHandshake(messenger, {}, 10, 1000).then((connection) => {
+    const remoteHandle: RemoteHandle<WorkerMethods, WorkerEvents> = connection.remoteHandle();
 
     calculateBtn.onclick = () => {
       const a = parseFloat(numberInputA.value);
@@ -83,9 +83,9 @@ const emitBtn = document.getElementById('emit-btn') as HTMLButtonElement;
   // messenger = DebugMessenger(messenger, log);
 
   // Start handshake with the iframe
-  ParentHandshake(messenger, model).then((connection: Connection<ParentEvents, ChildMethods, ChildEvents>) => {
-    const remoteHandle = connection.remoteHandle();
-    const localHandle = connection.localHandle();
+  ParentHandshake(messenger, model, 10, 1000).then((connection) => {
+    const remoteHandle: RemoteHandle<ChildMethods, ChildEvents> = connection.remoteHandle();
+    const localHandle: LocalHandle<ParentEvents> = connection.localHandle();
 
     remoteHandle.call('getBackground').then(color => {
       colorInput.value = color;
