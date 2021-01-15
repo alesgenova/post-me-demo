@@ -2,11 +2,24 @@ import { WorkerMessenger, ChildHandshake, DebugMessenger, debug } from "post-me"
 import { WorkerMethods } from "./types";
 
 const model: WorkerMethods = {
-    sum: (x, y) => {
-        return new Promise((resolve) => {
-            setTimeout(() => resolve(x + y), 250)
-        })
-    }
+  sum: (x, y, onProgress) => {
+    return new Promise((resolve) => {
+      const nIterations = 10;
+
+      const step = (iter: number) => {
+        if (iter >= nIterations) {
+          resolve(x + y);
+          return;
+        }
+
+        onProgress(iter / nIterations);
+
+        setTimeout(() => step(iter + 1), 100);
+      }
+
+      step(0);
+    })
+  }
 }
 
 let messenger = new WorkerMessenger({ worker: self as any });

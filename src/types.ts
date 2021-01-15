@@ -1,5 +1,5 @@
 export type WorkerMethods = {
-  sum: (x: number, y: number) => Promise<number>;
+  sum: (x: number, y: number, onProgress: (p: number) => void) => Promise<number>;
 };
 
 export type WorkerEvents = {};

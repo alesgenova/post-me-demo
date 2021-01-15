@@ -23,6 +23,8 @@ const calculateBtn = document.getElementById('calculate-btn') as HTMLButtonEleme
 const countSpan = document.getElementById('count-span') as HTMLSpanElement;
 const emitBtn = document.getElementById('emit-btn') as HTMLButtonElement;
 
+const progressDiv = document.getElementById('progress-bar') as HTMLDivElement;
+
 // Communicating with worker
 {
   const worker = new Worker('./worker.js');
@@ -38,8 +40,16 @@ const emitBtn = document.getElementById('emit-btn') as HTMLButtonElement;
     calculateBtn.onclick = () => {
       const a = parseFloat(numberInputA.value);
       const b = parseFloat(numberInputB.value);
-      remoteHandle.call('sum', a, b).then(result => {
+      numberInputC.value = '';
+
+      const onProgress = (progress: number) => {
+        const maxWidth = 25;
+        progressDiv.style.width = `${maxWidth * progress}rem`;
+      }
+
+      remoteHandle.call('sum', a, b, onProgress).then(result => {
         numberInputC.value = result.toString();
+        progressDiv.style.width = `0`;
       })
     }
   });
