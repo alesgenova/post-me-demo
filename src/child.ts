@@ -30,13 +30,13 @@ let messenger = new WindowMessenger({
 });
 
 // Optional debug all the low level messages echanged
-// const log = debug('post-me:child');
-// messenger = DebugMessenger(messenger, log);
+const log = debug('post-me:child');
+messenger = DebugMessenger(messenger, log);
 
 // Start handshake
 ChildHandshake(messenger, model).then((connection) => {
   const remoteHandle: RemoteHandle<ParentMethods, ParentEvents> = connection.remoteHandle();
-  const localHandle: LocalHandle<ChildEvents> = connection.localHandle();
+  const localHandle: LocalHandle<ChildMethods, ChildEvents> = connection.localHandle();
 
   remoteHandle.call('getTitle').then(title => {
     titleInput.value = title;

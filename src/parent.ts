@@ -30,8 +30,8 @@ const progressDiv = document.getElementById('progress-bar') as HTMLDivElement;
   const worker = new Worker('./worker.js');
   let messenger = new WorkerMessenger({ worker });
   // Optionally debug all the low level messages echanged
-  // const log = debug('post-me:parentW');
-  // messenger = DebugMessenger(messenger, log);
+  const log = debug('post-me:parentW');
+  messenger = DebugMessenger(messenger, log);
 
   // Start handshake with the worker
   ParentHandshake(messenger, {}, 10, 1000).then((connection) => {
@@ -43,8 +43,9 @@ const progressDiv = document.getElementById('progress-bar') as HTMLDivElement;
       numberInputC.value = '';
 
       const onProgress = (progress: number) => {
-        const maxWidth = 25;
-        progressDiv.style.width = `${maxWidth * progress}rem`;
+        progressDiv.style.width = `${progress * 100}%`;
+        // const maxWidth = 25;
+        // progressDiv.style.width = `${maxWidth * progress}rem`;
       }
 
       remoteHandle.call('sum', a, b, onProgress).then(result => {
@@ -89,13 +90,13 @@ const progressDiv = document.getElementById('progress-bar') as HTMLDivElement;
   });
 
   // Optional debug all the low level messages echanged
-  // const log = debug('post-me:parent0');
-  // messenger = DebugMessenger(messenger, log);
+  const log = debug('post-me:parent0');
+  messenger = DebugMessenger(messenger, log);
 
   // Start handshake with the iframe
   ParentHandshake(messenger, model, 10, 1000).then((connection) => {
     const remoteHandle: RemoteHandle<ChildMethods, ChildEvents> = connection.remoteHandle();
-    const localHandle: LocalHandle<ParentEvents> = connection.localHandle();
+    const localHandle: LocalHandle<ParentMethods, ParentEvents> = connection.localHandle()
 
     remoteHandle.call('getBackground').then(color => {
       colorInput.value = color;

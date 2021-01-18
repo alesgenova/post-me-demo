@@ -1,5 +1,5 @@
-import { WorkerMessenger, ChildHandshake, DebugMessenger, debug } from "post-me";
-import { WorkerMethods } from "./types";
+import { WorkerMessenger, ChildHandshake, DebugMessenger, debug, LocalHandle } from "post-me";
+import { WorkerMethods, WorkerEvents } from "./types";
 
 const model: WorkerMethods = {
   sum: (x, y, onProgress) => {
@@ -12,20 +12,20 @@ const model: WorkerMethods = {
           return;
         }
 
-        onProgress(iter / nIterations);
+        onProgress((iter + 1) / nIterations);
 
         setTimeout(() => step(iter + 1), 100);
       }
 
       step(0);
     })
-  }
+  },
 }
 
 let messenger = new WorkerMessenger({ worker: self as any });
 // Optionally debug all the low level messages echanged
-// const log = debug('post-me:worker');
-// messenger = DebugMessenger(messenger, log);
+const log = debug('post-me:worker');
+messenger = DebugMessenger(messenger, log);
 
 // Start handshake with the parent
 ChildHandshake(messenger, model).then((_connection) => { });

@@ -1,6 +1,7 @@
 import typescript from '@rollup/plugin-typescript';
 import resolve from '@rollup/plugin-node-resolve';
 import copy from 'rollup-plugin-copy'
+import { getBabelOutputPlugin } from '@rollup/plugin-babel';
 
 export default [
     {
@@ -12,7 +13,8 @@ export default [
         ],
         plugins: [
             resolve(),
-            typescript({ target: 'es5', declaration: false }),
+            typescript({ target: 'esnext', declaration: false }),
+            getBabelOutputPlugin({ presets: ['@babel/preset-env'] }),
             copy({
                 targets: [
                     { src: 'src/index.html', dest: 'dist' }
@@ -29,7 +31,8 @@ export default [
         ],
         plugins: [
             resolve(),
-            typescript({ target: 'es5', declaration: false }),
+            typescript({ target: 'esnext', declaration: false }),
+            getBabelOutputPlugin({ presets: ['@babel/preset-env'] }),
             copy({
                 targets: [
                     { src: 'src/child.html', dest: 'dist' }
@@ -46,7 +49,8 @@ export default [
         ],
         plugins: [
             resolve(),
-            typescript({ target: 'es5', declaration: false }),
+            typescript({ target: 'esnext', declaration: false }),
+            getBabelOutputPlugin({ presets: ['@babel/preset-env'] }),
         ]
     }
 ]
