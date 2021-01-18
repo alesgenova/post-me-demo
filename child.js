@@ -648,6 +648,38 @@ var WindowMessenger = function WindowMessenger(_ref) {
   };
 };
 
+var debug = function debug(namespace, log) {
+  log = log || console.debug || console.log || function () {};
+
+  return function () {
+    for (var _len3 = arguments.length, data = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+      data[_key3] = arguments[_key3];
+    }
+
+    log.apply(void 0, [namespace].concat(data));
+  };
+};
+
+function DebugMessenger(messenger, log) {
+  log = log || debug('post-me');
+
+  var debugListener = function debugListener(event) {
+    var data = event.data;
+    log('⬅️ received message', data);
+  };
+
+  messenger.addMessageListener(debugListener);
+  return {
+    postMessage: function postMessage(message) {
+      log('➡️ sending message', message);
+      messenger.postMessage(message);
+    },
+    addMessageListener: function addMessageListener(listener) {
+      return messenger.addMessageListener(listener);
+    }
+  };
+}
+
 var currentColor = '#A5D6A7';
 var rootContainer = document.getElementById("root");
 rootContainer.style.backgroundColor = currentColor;
@@ -671,9 +703,9 @@ var messenger = new WindowMessenger({
   // if cross-origin, specify the actual origin, or '*' (not recommended)
   remoteOrigin: window.origin
 }); // Optional debug all the low level messages echanged
-// const log = debug('post-me:child');
-// messenger = DebugMessenger(messenger, log);
-// Start handshake
+
+var log = debug('post-me:child');
+messenger = DebugMessenger(messenger, log); // Start handshake
 
 ChildHandshake(messenger, model).then(function (connection) {
   var remoteHandle = connection.remoteHandle();

@@ -817,10 +817,11 @@ var progressDiv = document.getElementById('progress-bar'); // Communicating with
     // if cross-origin, specify the actual origin, or '*' (not recommended)
     remoteOrigin: window.origin
   }); // Optional debug all the low level messages echanged
-  // const log = debug('post-me:parent0');
-  // messenger = DebugMessenger(messenger, log);
-  // Start handshake with the iframe
 
+
+  var _log = debug('post-me:parent0');
+
+  _messenger = DebugMessenger(_messenger, _log); // Start handshake with the iframe
 
   ParentHandshake(_messenger, model, 10, 1000).then(function (connection) {
     var remoteHandle = connection.remoteHandle();
