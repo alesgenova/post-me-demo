@@ -688,14 +688,12 @@ var WindowMessenger = function WindowMessenger(_ref) {
   };
 };
 
-var WorkerMessenger = function WorkerMessenger(_ref2) {
-  var worker = _ref2.worker;
-
-  _classCallCheck(this, WorkerMessenger);
+var BareMessenger = function BareMessenger(postable) {
+  _classCallCheck(this, BareMessenger);
 
   this.postMessage = function (message) {
     var transfer = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-    worker.postMessage(message, transfer);
+    postable.postMessage(message, transfer);
   };
 
   this.addMessageListener = function (listener) {
@@ -703,15 +701,31 @@ var WorkerMessenger = function WorkerMessenger(_ref2) {
       listener(event);
     };
 
-    worker.addEventListener('message', outerListener);
+    postable.addEventListener('message', outerListener);
 
     var removeListener = function removeListener() {
-      worker.removeEventListener('message', outerListener);
+      postable.removeEventListener('message', outerListener);
     };
 
     return removeListener;
   };
 };
+
+var WorkerMessenger = /*#__PURE__*/function (_BareMessenger) {
+  _inherits(WorkerMessenger, _BareMessenger);
+
+  var _super4 = _createSuper(WorkerMessenger);
+
+  function WorkerMessenger(_ref2) {
+    var worker = _ref2.worker;
+
+    _classCallCheck(this, WorkerMessenger);
+
+    return _super4.call(this, worker);
+  }
+
+  return WorkerMessenger;
+}(BareMessenger);
 
 var debug = function debug(namespace, log) {
   log = log || console.debug || console.log || function () {};
