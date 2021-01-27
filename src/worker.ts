@@ -1,5 +1,5 @@
-import { WorkerMessenger, ChildHandshake, DebugMessenger, debug, LocalHandle } from "post-me";
-import { WorkerMethods, WorkerEvents } from "./types";
+import { WorkerMessenger, ChildHandshake, DebugMessenger, debug } from "post-me";
+import { WorkerMethods } from "./types";
 
 const model: WorkerMethods = {
   sum: (x, y, onProgress) => {
