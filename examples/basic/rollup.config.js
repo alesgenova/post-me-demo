@@ -8,7 +8,7 @@ export default [
         input: 'src/parent.ts',
         output: [
             {
-                file: 'dist/parent.js'
+                file: '../../dist/basic/parent.js'
             }
         ],
         plugins: [
@@ -17,7 +17,7 @@ export default [
             getBabelOutputPlugin({ presets: ['@babel/preset-env'] }),
             copy({
                 targets: [
-                    { src: 'src/index.html', dest: 'dist' }
+                    { src: 'src/index.html', dest: '../../dist/basic' }
                 ]
             })
         ]
@@ -26,7 +26,7 @@ export default [
         input: 'src/child.ts',
         output: [
             {
-                file: 'dist/child.js'
+                file: '../../dist/basic/child.js'
             }
         ],
         plugins: [
@@ -35,7 +35,7 @@ export default [
             getBabelOutputPlugin({ presets: ['@babel/preset-env'] }),
             copy({
                 targets: [
-                    { src: 'src/child.html', dest: 'dist' }
+                    { src: 'src/child.html', dest: '../../dist/basic' }
                 ]
             })
         ]
@@ -44,7 +44,7 @@ export default [
         input: 'src/worker.ts',
         output: [
             {
-                file: 'dist/worker.js'
+                file: '../../dist/basic/worker.js'
             }
         ],
         plugins: [
