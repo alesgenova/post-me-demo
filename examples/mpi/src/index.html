@@ -1,0 +1,117 @@
+<html>
+
+<head>
+  <title>post-me demo</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="post-me demo" />
+</head>
+
+<body>
+  <div id="root" class="root">
+    <h1 id="title-header"><a href="https://github.com/alesgenova/post-me">@post-me/mpi</a></h1>
+
+    <label for="thread-select">Run on</label>
+    <select id="thread-select">
+      <option value="main">Main Thread</option>
+      <option value="pool">4 Workers</option>
+    </select>
+
+    <div class="section">
+      <h2>Sort Array</h2>
+      <label for="thread-select">Size</label>
+
+      <select id="size-select">
+        <option value="6">1e6</option>
+        <option value="7">1e7</option>
+      </select>
+      <button id="create-btn">Create</button>
+      <button id="sort-btn">Sort</button>
+      <span id="array-result-span"></span>
+
+      <div class="array-container">
+        <img id="array-img" class="array-img" />
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Calculate Pi</h2>
+
+      <label for="thread-select">Iterations</label>
+      <select id="dx-select">
+        <option value="8">1e8</option>
+        <option value="9">1e9</option>
+      </select>
+      <button id="calculate-btn">Calculate</button>
+      <span id="pi-result-span"></span>
+    </div>
+  </div>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+</body>
+
+<!-- <script src="https://unpkg.com/debug-browser/dist/index.js"></script> -->
+<script src="./parent.js"></script>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    width: 100%;
+    height: 100%;
+  }
+
+  body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #F5F5F5;
+    font-family: sans-serif;
+  }
+
+  iframe {
+    border: none;
+  }
+
+  .root {
+    padding: 1rem;
+  }
+
+  .child-container {
+    width: 100%;
+    height: 15rem;
+  }
+
+  .number-input {
+    width: 5rem;
+  }
+
+  .section {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .array-container {
+    width: 100%;
+    height: 1rem;
+    margin: 0.5rem;
+  }
+
+  .array-img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .progress-bar {
+    width: 0;
+    height: 0.25rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    background-color: cadetblue;
+  }
+</style>
+
+</html>
