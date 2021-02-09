@@ -42,15 +42,23 @@ function createUniqueIdFn() {
     return id;
   };
 }
+/**
+ * A concrete implementation of the {@link Emitter} interface
+ *
+ * @public
+ */
 
-var Emitter = /*#__PURE__*/function () {
-  function Emitter() {
-    _classCallCheck(this, Emitter);
+
+var ConcreteEmitter = /*#__PURE__*/function () {
+  function ConcreteEmitter() {
+    _classCallCheck(this, ConcreteEmitter);
 
     this._listeners = {};
   }
+  /** {@inheritDoc Emitter.addEventListener} */
 
-  _createClass(Emitter, [{
+
+  _createClass(ConcreteEmitter, [{
     key: "addEventListener",
     value: function addEventListener(eventName, listener) {
       var listeners = this._listeners[eventName];
@@ -62,6 +70,8 @@ var Emitter = /*#__PURE__*/function () {
 
       listeners.add(listener);
     }
+    /** {@inheritDoc Emitter.removeEventListener} */
+
   }, {
     key: "removeEventListener",
     value: function removeEventListener(eventName, listener) {
@@ -73,6 +83,8 @@ var Emitter = /*#__PURE__*/function () {
 
       listeners["delete"](listener);
     }
+    /** {@inheritDoc Emitter.once} */
+
   }, {
     key: "once",
     value: function once(eventName) {
@@ -88,6 +100,8 @@ var Emitter = /*#__PURE__*/function () {
         _this.addEventListener(eventName, listener);
       });
     }
+    /** @internal */
+
   }, {
     key: "emit",
     value: function emit(eventName, data) {
@@ -101,6 +115,8 @@ var Emitter = /*#__PURE__*/function () {
         listener(data);
       });
     }
+    /** @internal */
+
   }, {
     key: "removeAllListeners",
     value: function removeAllListeners() {
@@ -112,7 +128,7 @@ var Emitter = /*#__PURE__*/function () {
     }
   }]);
 
-  return Emitter;
+  return ConcreteEmitter;
 }();
 
 var MessageType;
@@ -188,7 +204,7 @@ function createEventMessage(sessionId, eventName, payload) {
 
 
 function isMessage(m) {
-  return m.type === MARKER;
+  return m && m.type === MARKER;
 }
 
 function isHandshakeRequestMessage(m) {
@@ -219,8 +235,8 @@ function makeResponseEvent(requestId) {
   return "response_".concat(requestId);
 }
 
-var Dispatcher = /*#__PURE__*/function (_Emitter) {
-  _inherits(Dispatcher, _Emitter);
+var Dispatcher = /*#__PURE__*/function (_ConcreteEmitter) {
+  _inherits(Dispatcher, _ConcreteEmitter);
 
   var _super = _createSuper(Dispatcher);
 
@@ -276,6 +292,13 @@ var Dispatcher = /*#__PURE__*/function (_Emitter) {
   }, {
     key: "respondToRemote",
     value: function respondToRemote(requestId, value, error, transfer) {
+      if (error instanceof Error) {
+        error = {
+          name: error.name,
+          message: error.message
+        };
+      }
+
       var message = createResponsMessage(this.sessionId, requestId, value, error);
       this.messenger.postMessage(message, transfer);
     }
@@ -300,10 +323,10 @@ var Dispatcher = /*#__PURE__*/function (_Emitter) {
   }]);
 
   return Dispatcher;
-}(Emitter);
+}(ConcreteEmitter);
 
-var ChildHandshakeDispatcher = /*#__PURE__*/function (_Emitter2) {
-  _inherits(ChildHandshakeDispatcher, _Emitter2);
+var ChildHandshakeDispatcher = /*#__PURE__*/function (_ConcreteEmitter2) {
+  _inherits(ChildHandshakeDispatcher, _ConcreteEmitter2);
 
   var _super2 = _createSuper(ChildHandshakeDispatcher);
 
@@ -342,7 +365,7 @@ var ChildHandshakeDispatcher = /*#__PURE__*/function (_Emitter2) {
   }]);
 
   return ChildHandshakeDispatcher;
-}(Emitter);
+}(ConcreteEmitter);
 
 var ProxyType;
 
@@ -359,11 +382,11 @@ function createCallbackProxy(callbackId) {
 }
 
 function isCallbackProxy(p) {
-  return p.type === MARKER && p.proxy === ProxyType.Callback;
+  return p && p.type === MARKER && p.proxy === ProxyType.Callback;
 }
 
-var ConcreteRemoteHandle = /*#__PURE__*/function (_Emitter3) {
-  _inherits(ConcreteRemoteHandle, _Emitter3);
+var ConcreteRemoteHandle = /*#__PURE__*/function (_ConcreteEmitter3) {
+  _inherits(ConcreteRemoteHandle, _ConcreteEmitter3);
 
   var _super3 = _createSuper(ConcreteRemoteHandle);
 
@@ -472,7 +495,7 @@ var ConcreteRemoteHandle = /*#__PURE__*/function (_Emitter3) {
   }]);
 
   return ConcreteRemoteHandle;
-}(Emitter);
+}(ConcreteEmitter);
 
 var ConcreteLocalHandle = /*#__PURE__*/function () {
   function ConcreteLocalHandle(dispatcher, localMethods) {
@@ -497,6 +520,16 @@ var ConcreteLocalHandle = /*#__PURE__*/function () {
       }
 
       this._dispatcher.emitToRemote(eventName, payload, transfer);
+    }
+  }, {
+    key: "setMethods",
+    value: function setMethods(methods) {
+      this._methods = methods;
+    }
+  }, {
+    key: "setMethod",
+    value: function setMethod(methodName, method) {
+      this._methods[methodName] = method;
     }
   }, {
     key: "setReturnTransfer",
@@ -587,6 +620,16 @@ var ConcreteConnection = /*#__PURE__*/function () {
 
   return ConcreteConnection;
 }();
+/**
+ * Initiate the handshake from the Child side
+ *
+ * @param messenger - The Messenger used to send and receive messages from the other end
+ * @param localMethods - The methods that will be exposed to the other end
+ * @returns A Promise to an active {@link Connection} to the other end
+ *
+ * @public
+ */
+
 
 function ChildHandshake(messenger) {
   var localMethods = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -617,6 +660,13 @@ var acceptableMessageEvent = function acceptableMessageEvent(event, remoteWindow
 
   return true;
 };
+/**
+ * A concrete implementation of {@link Messenger} used to communicate with another Window.
+ *
+ * @public
+ *
+ */
+
 
 var WindowMessenger = function WindowMessenger(_ref) {
   var localWindow = _ref.localWindow,
@@ -647,8 +697,18 @@ var WindowMessenger = function WindowMessenger(_ref) {
     return removeListener;
   };
 };
+/**
+ * Create a logger function with a specific namespace
+ *
+ * @param namespace - The namespace will be prepended to all the arguments passed to the logger function
+ * @param log - The underlying logger (`console.log` by default)
+ *
+ * @public
+ *
+ */
 
-var debug = function debug(namespace, log) {
+
+function debug(namespace, log) {
   log = log || console.debug || console.log || function () {};
 
   return function () {
@@ -658,7 +718,17 @@ var debug = function debug(namespace, log) {
 
     log.apply(void 0, [namespace].concat(data));
   };
-};
+}
+/**
+ * Decorate a {@link Messenger} so that it will log any message exchanged
+ * @param messenger - The Messenger that will be decorated
+ * @param log - The logger function that will receive each message
+ * @returns A decorated Messenger
+ *
+ * @public
+ *
+ */
+
 
 function DebugMessenger(messenger, log) {
   log = log || debug('post-me');
@@ -670,9 +740,9 @@ function DebugMessenger(messenger, log) {
 
   messenger.addMessageListener(debugListener);
   return {
-    postMessage: function postMessage(message) {
+    postMessage: function postMessage(message, transfer) {
       log('➡️ sending message', message);
-      messenger.postMessage(message);
+      messenger.postMessage(message, transfer);
     },
     addMessageListener: function addMessageListener(listener) {
       return messenger.addMessageListener(listener);

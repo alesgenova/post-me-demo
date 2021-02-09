@@ -10,36 +10,13 @@
 
 <body>
   <div id="root" class="root">
-    <h1 id="title-header">Parent</h1>
-    <div class="section">
-      <span>Set child background</span>
-      <input type="color" id="color-input"></input>
-    </div>
+    <h1 id="title-header"><a href="https://github.com/alesgenova/post-me">post-me</a> examples</h1>
 
-    <div class="section">
-      <span>"pong" events received: <b><span id="count-span">0</span></b></span>
-    </div>
-
-    <div class="section">
-      <button id="emit-btn">Emit "ping" event</button>
-    </div>
-
-    <div id="child-container" class="child-container"></div>
-
-    <h1>Worker</h1>
-    <input type="number" id="number-input-a" class="number-input"></input>
-    +
-    <input type="number" id="number-input-b" class="number-input"></input>
-    =
-    <input type="number" id="number-input-c" class="number-input" disabled></input>
-    <button id="calculate-btn">Calculate</button>
-    <div id="progress-bar" class="progress-bar"></div>
-  </div>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
+    <ul>
+      <li><a href="basic/">Basic example</a></li>
+      <li><a href="mpi/">MPI parallel programming</a></li>
+    </ul>
 </body>
-
-<!-- <script src="https://unpkg.com/debug-browser/dist/index.js"></script> -->
-<script src="./parent.js"></script>
 
 <style>
   * {
@@ -60,34 +37,8 @@
     font-family: sans-serif;
   }
 
-  iframe {
-    border: none;
-  }
-
   .root {
     padding: 1rem;
-  }
-
-  .child-container {
-    width: 100%;
-    height: 15rem;
-  }
-
-  .number-input {
-    width: 5rem;
-  }
-
-  .section {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .progress-bar {
-    width: 0;
-    height: 0.25rem;
-    margin-top: 0.25rem;
-    margin-bottom: 0.25rem;
-    background-color: cadetblue;
   }
 </style>
 
