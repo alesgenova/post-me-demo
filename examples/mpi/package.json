@@ -10,7 +10,7 @@
   "dependencies": {
     "@colormap/core": "^0.2.0",
     "@colormap/presets": "^0.2.0",
-    "post-me": "^0.4.3"
+    "@post-me/mpi": "^0.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
